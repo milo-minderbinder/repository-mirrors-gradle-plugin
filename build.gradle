@@ -1,0 +1,67 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.10.1'
+}
+
+group 'co.insecurity'
+ByteArrayOutputStream os = new ByteArrayOutputStream()
+exec {
+    workingDir project.rootDir
+    ignoreExitValue = true
+    commandLine 'git', 'describe', '--abbrev=0', '--tags'
+    standardOutput = os
+}
+version = os.toString().trim().replaceAll(/^v/, "") ?: '0.0.1'
+boolean isRelease = project.hasProperty('isRelease') ?
+        Boolean.parseBoolean(project.property('isRelease').toString()) : false
+if (!isRelease) {
+    version = version.replaceAll(/-SNAPSHOT$/, '') + '-SNAPSHOT'
+}
+logger.info("version: ${project.version}")
+
+apply from: "${rootDir}/gradle/functional-test.gradle"
+apply from: "${rootDir}/gradle/maven-publish.gradle"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile localGroovy()
+    testCompile gradleTestKit()
+    testCompile("org.spockframework:spock-core:1.3-groovy-2.5") {
+        exclude module: "groovy-all"
+    }
+    testCompile 'org.mock-server:mockserver-netty:5.7.0'
+    testRuntime files(pluginUnderTestMetadata)
+}
+
+tasks.withType(GroovyCompile) {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+gradlePlugin {
+    plugins {
+        repositoryMirrorsPlugin {
+            id = 'co.insecurity.repository-mirrors'
+            implementationClass = 'co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://www.insecurity.co/'
+    vcsUrl = 'https://github.com/milo-minderbinder/repository-mirrors-gradle-plugin'
+    tags = ['repository', 'mirror', 'mirrors', 'artifactory']
+    plugins {
+        repositoryMirrorsPlugin {
+            displayName = 'Repository Mirrors Gradle Plugin'
+            description = 'Gradle Plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
+        }
+    }
+}

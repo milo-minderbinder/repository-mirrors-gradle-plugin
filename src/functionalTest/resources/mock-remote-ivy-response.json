@@ -1,0 +1,15 @@
+[
+  {
+    "key": "jcenter-ivy",
+    "type": "REMOTE",
+    "url": "https://jcenter.bintray.com",
+    "packageType": "Ivy"
+  },
+  {
+    "key": "typesafe_ivy-releases",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://repo.typesafe.com/typesafe/ivy-releases/",
+    "packageType": "Ivy"
+  }
+]

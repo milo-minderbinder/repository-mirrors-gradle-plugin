@@ -1,0 +1,89 @@
+logger.info('in testinit.gradle')
+
+void printPhase(name, obj) {
+    int termWidth = 80
+    def sep = '*' * termWidth
+    String label = "${name}: ${obj}"
+    int offset = (label.length() + termWidth) / 2
+    //logger.info(String.format("\n%s\n%${offset}s\n%s\n", sep, label, sep))
+    println(String.format("\n\033[0;96m%s\n%${offset}s\n%s\n\033[0m", sep, label, sep))
+}
+
+gradle.settingsEvaluated { Settings s ->
+    // Order: 0
+    printPhase('0. settingsEvaluated', s)
+}
+
+gradle.projectsLoaded { Gradle g ->
+    // Order: 3
+    printPhase('3. projectsLoaded', g)
+}
+
+gradle.beforeProject { Project p ->
+    // Order: 4
+    printPhase('4. beforeProject', p)
+}
+
+gradle.allprojects { Project p ->
+
+    buildscript { ScriptHandler s ->
+        // Order: 1
+        printPhase('1. buildscript', s)
+    }
+
+    // Order: 2
+    printPhase('2. allprojects', p)
+
+    beforeEvaluate { b ->
+        // Order: 5
+        printPhase('5. beforeEvaluate', b)
+    }
+
+    // Order: 7
+    afterEvaluate { b ->
+        printPhase('7. afterEvaluate', b)
+    }
+}
+
+// Order: 6
+gradle.afterProject { Project p ->
+    printPhase('6. afterProject', p)
+}
+
+// Order: 8
+gradle.projectsEvaluated { Gradle g ->
+    printPhase('8. projectsEvaluated', g)
+}
+
+// Order: 9
+gradle.buildFinished { BuildResult b ->
+    printPhase('9. buildFinished', b)
+}
+/*
+gradle.taskGraph.afterTask { task ->
+    StringBuffer taskDetails = new StringBuffer()
+    taskDetails << """
+    -------------
+    name:$task.name type: ${task.class.name} group:$task.group : $task.description conv:$task.convention.plugins
+    """.stripIndent()
+    Set<Task> dependencyTasks = task.taskDependencies.getDependencies(task)
+    if (dependencyTasks)
+        taskDetails << "task dependencies: " + dependencyTasks.collect { dt -> dt.name }.join(', ') + '\n'
+    if (task.inputs.hasInputs) {
+        taskDetails << 'inputs:\n'
+        task.inputs.files.each { i ->
+            String inputPath = task.project.rootDir.toPath().relativize(i.toPath()).toString()
+            taskDetails << "\t${inputPath}\n"
+        }
+    }
+    if (task.outputs.hasOutput) {
+        taskDetails << "outputs:\n"
+        task.outputs.files.each { i ->
+            String outputPath = task.project.rootDir.toPath().relativize(i.toPath()).toString()
+            taskDetails << "\t${outputPath}\n"
+        }
+    }
+    taskDetails << "-------------\n"
+    println taskDetails
+}
+*/

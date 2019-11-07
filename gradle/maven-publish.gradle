@@ -1,0 +1,85 @@
+afterEvaluate {
+    plugins.withType(JavaPlugin) {
+        task sourcesJar(type: Jar) {
+            archiveClassifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        task javadocJar(type: Jar) {
+            dependsOn javadoc
+            archiveClassifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+    }
+
+    plugins.withType(GroovyPlugin) {
+        task groovydocJar(type: Jar) {
+            dependsOn groovydoc
+            archiveClassifier = 'groovydoc'
+            from groovydoc.destinationDir
+        }
+    }
+
+    artifacts {
+        plugins.withType(JavaPlugin) {
+            archives sourcesJar
+            archives javadocJar
+        }
+
+        plugins.withType(GroovyPlugin) {
+            archives groovydocJar
+        }
+    }
+
+    publishing {
+        publications {
+            pluginMaven(MavenPublication) {
+                plugins.withType(JavaPlugin) {
+                    artifact sourcesJar
+                    artifact javadocJar
+                }
+                plugins.withType(GroovyPlugin) {
+                    artifact groovydocJar
+                }
+
+                pom {
+                    description = 'Gradle Plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
+                    url = 'https://www.insecurity.co/'
+
+                    scm {
+                        connection = 'git@github.com:milo-minderbinder/repository-mirrors-gradle-plugin.git'
+                        developerConnection = 'git@github.com:milo-minderbinder/repository-mirrors-gradle-plugin.git'
+                        url = 'https://github.com/milo-minderbinder/repository-mirrors-gradle-plugin'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'milo-minderbinder'
+                            name = 'Milo Minderbinder'
+                            email = 'minderbinder.enterprises@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'testRepo'
+                url = "${rootProject.buildDir}/test-repo"
+            }
+        }
+    }
+
+    //signing {
+    //    useGpgCmd()
+    //    sign publishing.publications.matching {true}
+    //}
+}

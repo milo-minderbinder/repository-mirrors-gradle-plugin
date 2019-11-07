@@ -1,0 +1,277 @@
+[
+  {
+    "key": "FindBugs",
+    "type": "REMOTE",
+    "url": "http://singularity.svn.sourceforge.net/svnroot/singularity/repos/repo/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "Spy-Memcached",
+    "type": "REMOTE",
+    "url": "http://files.couchbase.com/maven2/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "apache-dist",
+    "type": "REMOTE",
+    "url": "http://mirrors.gigenet.com/apache/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "apache-public",
+    "type": "REMOTE",
+    "url": "https://repository.apache.org/content/groups/public/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "apache-snapshots",
+    "type": "REMOTE",
+    "url": "https://repository.apache.org/content/groups/snapshots/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "clojars",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://clojars.org/repo",
+    "packageType": "Maven"
+  },
+  {
+    "key": "cloudera-libs-release",
+    "type": "REMOTE",
+    "url": "https://jcenter.bintray.com",
+    "packageType": "Maven"
+  },
+  {
+    "key": "cloudera-libs-snapshot",
+    "type": "REMOTE",
+    "url": "https://repository.cloudera.com/artifactory/libs-snapshot-local/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "cloudera-repos",
+    "type": "REMOTE",
+    "url": "https://repository.cloudera.com/artifactory/cloudera-repos/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "confluent-io",
+    "type": "REMOTE",
+    "url": "http://packages.confluent.io/maven/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "couchbase",
+    "type": "REMOTE",
+    "url": "http://files.couchbase.com/maven2/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "eclipselink",
+    "type": "REMOTE",
+    "url": "http://download.eclipse.org/rt/eclipselink/maven.repo/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "google-code",
+    "description": "Google's open source releases (local file cache)",
+    "type": "REMOTE",
+    "url": "http://google-maven-repository.googlecode.com/svn/repository",
+    "packageType": "Maven"
+  },
+  {
+    "key": "gradle-libs",
+    "description": "Gradle libraries (local file cache)",
+    "type": "REMOTE",
+    "url": "https://gradle.jfrog.io/gradle/libs",
+    "packageType": "Maven"
+  },
+  {
+    "key": "gradle-plugins",
+    "description": "Gradle plugins (local file cache)",
+    "type": "REMOTE",
+    "url": "https://gradle.jfrog.io/gradle/plugins-releases",
+    "packageType": "Maven"
+  },
+  {
+    "key": "ibiblio",
+    "type": "REMOTE",
+    "url": "http://mirrors.ibiblio.org/maven2/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "java.net.m2",
+    "description": "java.net Maven2 Format (local file cache)",
+    "type": "REMOTE",
+    "url": "http://download.java.net/maven/2",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jboss",
+    "description": "JBoss Maven2 releases (local file cache)",
+    "type": "REMOTE",
+    "url": "http://repository.jboss.org/nexus/content/groups/public-jboss/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jboss-nexus",
+    "type": "REMOTE",
+    "url": "https://repository.jboss.org/nexus/content/repositories/releases/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jboss-thirdparty",
+    "type": "REMOTE",
+    "url": "http://repository.jboss.org/nexus/content/repositories/thirdparty-releases/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jcenter",
+    "description": "Bintray Central Java repository (local file cache)",
+    "type": "REMOTE",
+    "url": "https://jcenter.bintray.com",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jfrog-artifactory-pro-rpms",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://jfrog.bintray.com/artifactory-pro-rpms",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jfrog-libs",
+    "description": "JFrog libraries releases (local file cache)",
+    "type": "REMOTE",
+    "url": "http://repo.jfrog.org/artifactory/libs-releases-local",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jfrog-plugins",
+    "description": "JFrog plugins releases (local file cache)",
+    "type": "REMOTE",
+    "url": "http://repo.jfrog.org/artifactory/plugins-releases-local",
+    "packageType": "Maven"
+  },
+  {
+    "key": "jitpack.io-docs",
+    "type": "REMOTE",
+    "url": "https://jitpack.io/docs/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "maven-atlassian",
+    "type": "REMOTE",
+    "url": "https://maven.atlassian.com/content/repositories/atlassian-public/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "maven-java",
+    "type": "REMOTE",
+    "url": "https://maven.java.net/content/groups/public/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "maven-org",
+    "type": "REMOTE",
+    "url": "https://repo1.maven.org/maven2/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "maven2-google",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://maven.google.com/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "opencast",
+    "type": "REMOTE",
+    "url": "http://nexus.opencast.org/nexus/content/repositories/public/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "plugins-gradle",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://plugins.gradle.org/m2/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "repo1",
+    "description": "Central Maven 2 repository (local file cache)",
+    "type": "REMOTE",
+    "url": "https://repo1.maven.org/maven2",
+    "packageType": "Maven"
+  },
+  {
+    "key": "restlet",
+    "type": "REMOTE",
+    "url": "http://maven.restlet.org/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "sonatype",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://oss.sonatype.org/content/groups/public/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "sonatype-releases",
+    "type": "REMOTE",
+    "url": "https://oss.sonatype.org/content/repositories/releases/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "sonatype-snapshots",
+    "type": "REMOTE",
+    "url": "https://oss.sonatype.org/content/repositories/snapshots/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "spray",
+    "type": "REMOTE",
+    "url": "http://repo.spray.io/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "spray-nightlies",
+    "type": "REMOTE",
+    "url": "http://nightlies.spray.io/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "spring-milestone",
+    "description": "SpringSource in milestone version (local file cache)",
+    "type": "REMOTE",
+    "url": "http://maven.springframework.org/milestone",
+    "packageType": "Maven"
+  },
+  {
+    "key": "spring-release",
+    "description": "SpringSource releases (local file cache)",
+    "type": "REMOTE",
+    "url": "http://maven.springframework.org/release",
+    "packageType": "Maven"
+  },
+  {
+    "key": "twttr",
+    "type": "REMOTE",
+    "url": "http://maven.twttr.com",
+    "packageType": "Maven"
+  },
+  {
+    "key": "typesafe_maven-releases",
+    "description": " (local file cache)",
+    "type": "REMOTE",
+    "url": "https://repo.typesafe.com/typesafe/maven-releases/",
+    "packageType": "Maven"
+  },
+  {
+    "key": "ultrabrew-repo",
+    "type": "REMOTE",
+    "url": "https://dl.bintray.com/ultrabrew/m2",
+    "packageType": "Maven"
+  }
+]
