@@ -3,22 +3,20 @@ plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
     id 'com.gradle.plugin-publish' version '0.10.1'
+    id 'pl.allegro.tech.build.axion-release' version '1.10.2'
 }
 
 group 'co.insecurity'
-ByteArrayOutputStream os = new ByteArrayOutputStream()
-exec {
-    workingDir project.rootDir
-    ignoreExitValue = true
-    commandLine 'git', 'describe', '--abbrev=0', '--tags'
-    standardOutput = os
+scmVersion {
+    tag {
+        prefix = 'v'
+        versionSeparator = ''
+    }
+    hooks {
+        pre 'fileUpdate', [file: 'README.md', pattern: {v, c -> /\b$v\b/}, replacement: {v, c -> /$v/}]
+    }
 }
-version = os.toString().trim().replaceAll(/^v/, "") ?: '0.0.1'
-boolean isRelease = project.hasProperty('isRelease') ?
-        Boolean.parseBoolean(project.property('isRelease').toString()) : false
-if (!isRelease) {
-    version = version.replaceAll(/-SNAPSHOT$/, '') + '-SNAPSHOT'
-}
+project.version = scmVersion.version
 logger.info("version: ${project.version}")
 
 apply from: "${rootDir}/gradle/functional-test.gradle"
