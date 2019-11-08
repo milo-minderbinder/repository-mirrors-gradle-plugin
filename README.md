@@ -1,27 +1,14 @@
 # repository-mirrors-gradle-plugin
-A Gradle Plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.
+A Gradle [init script plugin](https://docs.gradle.org/current/userguide/init_scripts.html#sec:init_script_plugins) that automatically updates buildscript and project repositories to use the configured mirror URLs.
 
 ## Basic Usage
-Add the plugin to your `build.gradle`:
-```groovy
-plugins {
-  id "co.insecurity.repository-mirrors" version "0.1.0"
-}
-```
+To apply the plugin to all projects on your workstation or build server automatically, update the Gradle init script below with your own Artifactory URL, and save it to `$HOME/init.d/repositoryMirrors.gradle`. The plugin will search the configured Artifactory server for all remote Ivy and Maven repositories it mirrors, and will automatically update all buildscript and project repository URLs with the URL of its mirror in Artifactory (where one exists).
 
-Next, configure the plugin with the URL of an Artifactory server to use:
-```groovy
-repositoryMirrors {
-    artifactoryURL = 'https://artifactory.example.com/artifactory'
-}
-```
-
-The plugin will automatically search the configured Artifactory server for all remote Ivy and Maven repositories it mirrors, and will automatically update all buildscript and project repository URLs with the URL of its mirror in Artifactory (where one exists).
-
-### Automatically Applying to All Projects
-To apply the plugin to all projects on your workstation or build server automatically, update the Gradle init script below with your own Artifactory URL, and save it to `$HOME/init.d/repositoryMirrors.gradle`:
 ```groovy
 initscript {
+    repositories {
+        gradlePluginPortal()
+    }
     dependencies {
         classpath "co.insecurity:repository-mirrors-gradle-plugin:0.1.0"
     }
@@ -33,6 +20,7 @@ allprojects {
     repositoryMirrors {
         artifactoryURL = 'https://artifactory.example.com/artifactory'
     }
+    removeDuplicates = true  // remove duplicate (i.e. same URL) Ivy and Maven repositories (default: false)
 }
 ```
 

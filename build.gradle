@@ -6,7 +6,7 @@ plugins {
     id 'pl.allegro.tech.build.axion-release' version '1.10.2'
 }
 
-description 'A Gradle plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
+description 'A Gradle init script plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
 group 'co.insecurity'
 scmVersion {
     tag {

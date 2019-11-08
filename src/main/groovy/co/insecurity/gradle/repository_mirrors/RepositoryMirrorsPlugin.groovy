@@ -8,7 +8,6 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
-import org.gradle.api.internal.tasks.testing.report.PackageTestResults
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.logging.Logger
 
