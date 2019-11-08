@@ -5,7 +5,7 @@ A Gradle Plugin that automatically updates buildscript and project repositories 
 Add the plugin to your `build.gradle`:
 ```groovy
 plugins {
-  id "co.insecurity.repository-mirrors" version "0.0.1"
+  id "co.insecurity.repository-mirrors" version "0.1.0"
 }
 ```
 
@@ -23,7 +23,7 @@ To apply the plugin to all projects on your workstation or build server automati
 ```groovy
 initscript {
     dependencies {
-        classpath "co.insecurity:repository-mirrors-gradle-plugin:0.0.1"
+        classpath "co.insecurity:repository-mirrors-gradle-plugin:0.1.0"
     }
 }
 
