@@ -15,6 +15,7 @@ scmVersion {
     }
     hooks {
         pre 'fileUpdate', [file: 'README.md', pattern: {v, c -> /\b$v\b/}, replacement: {v, c -> /$v/}]
+        pre 'commit'
     }
 }
 project.version = scmVersion.version
