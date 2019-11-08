@@ -43,13 +43,13 @@ afterEvaluate {
                 }
 
                 pom {
-                    description = 'Gradle Plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
-                    url = 'https://www.insecurity.co/'
+                    description = "${rootProject.description}"
+                    url = "https://github.com/milo-minderbinder/${rootProject.name}"
 
                     scm {
-                        connection = 'git@github.com:milo-minderbinder/repository-mirrors-gradle-plugin.git'
-                        developerConnection = 'git@github.com:milo-minderbinder/repository-mirrors-gradle-plugin.git'
-                        url = 'https://github.com/milo-minderbinder/repository-mirrors-gradle-plugin'
+                        connection = "git@github.com:milo-minderbinder/${rootProject.name}.git"
+                        developerConnection = "git@github.com:milo-minderbinder/${rootProject.name}.git"
+                        url = "https://github.com/milo-minderbinder/${rootProject.name}"
                     }
 
                     licenses {

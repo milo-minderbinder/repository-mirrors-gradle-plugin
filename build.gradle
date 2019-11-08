@@ -6,6 +6,7 @@ plugins {
     id 'pl.allegro.tech.build.axion-release' version '1.10.2'
 }
 
+description 'A Gradle plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
 group 'co.insecurity'
 scmVersion {
     tag {
@@ -53,13 +54,13 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = 'https://www.insecurity.co/'
-    vcsUrl = 'https://github.com/milo-minderbinder/repository-mirrors-gradle-plugin'
+    website = "https://github.com/milo-minderbinder/${rootProject.name}"
+    vcsUrl = "https://github.com/milo-minderbinder/${rootProject.name}.git"
     tags = ['repository', 'mirror', 'mirrors', 'artifactory']
     plugins {
         repositoryMirrorsPlugin {
             displayName = 'Repository Mirrors Gradle Plugin'
-            description = 'Gradle Plugin that automatically updates buildscript and project repositories to use the configured mirror URLs.'
+            description = "${rootProject.description}"
         }
     }
 }
