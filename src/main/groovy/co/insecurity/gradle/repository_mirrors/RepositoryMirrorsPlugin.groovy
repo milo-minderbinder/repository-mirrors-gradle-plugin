@@ -82,6 +82,9 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
 
     void configureRepositoryMirrors(Project project, RepositoryMirrorsExtension extension) {
         Closure repoMirrorClosure = {Map<String, String> packageMirrors, ArtifactRepository repo ->
+            if (!extension.enabled.getOrElse(true)) {
+                return
+            }
             log.debug "checking for mirror: ${repo.name} - ${repo.url}"
             String repoURL = repo.url.toString().replaceFirst('/$', '')
             if (packageMirrors.containsKey(repoURL)) {
@@ -92,6 +95,9 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
         }
 
         Closure duplicateRepoCheckClosure = {Set<String> repoURLs, ArtifactRepository repo ->
+            if (!extension.enabled.getOrElse(true)) {
+                return
+            }
             if (extension.removeDuplicates.getOrElse(false)) {
                 if (repoURLs.contains(repo.url.toString())) {
                     log.warn "${ColorizedLogger.ANSIColor.BRIGHT_RED}Removing duplicate repository${ColorizedLogger.ANSIColor.RESET}: ${repo.name} (${repo.url})"
