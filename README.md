@@ -1,5 +1,5 @@
 # repository-mirrors-gradle-plugin
-A Gradle [init script plugin](https://docs.gradle.org/current/userguide/init_scripts.html#sec:init_script_plugins) that automatically updates buildscript and project repositories to use the configured mirror URLs.
+A Gradle [init script plugin](https://docs.gradle.org/current/userguide/init_scripts.html#sec:init_script_plugins) that dynamically updates buildscript and project repositories to use the configured mirror URLs.
 
 ## Usage
 To apply the plugin to all projects on your workstation or build server automatically, update the Gradle init script below with your own Artifactory URL, and save it to `$HOME/.gradle/init.d/repositoryMirrors.gradle`.
