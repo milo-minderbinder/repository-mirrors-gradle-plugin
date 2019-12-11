@@ -48,8 +48,13 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
         URL reposAPIURL = new URL(String.format('%s/%s?type=remote&packageType=%s',
                 artifactoryURL, REMOTE_REPOS_ENDPOINT, packageType.toString()))
         log.debug "fetching mirrors from ${reposAPIURL}"
-
-        List repoList = new JsonSlurper().parse(reposAPIURL, StandardCharsets.UTF_8.name()) as List
+        List repoList
+        try {
+            repoList = new JsonSlurper().parse(reposAPIURL, StandardCharsets.UTF_8.name()) as List
+        } catch(Exception e) {
+            log.warn("ignoring ${packageType} mirrors in ${artifactoryURL}; exception while fetching & parsing ${reposAPIURL}", e)
+            return Collections.emptyMap()
+        }
         Map<String, String> mirrors = repoList.collectEntries {
             String remoteURL = it.url.replaceFirst('/$', '')
             String key = it.key

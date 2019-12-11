@@ -45,23 +45,23 @@ final class RepositoryMirrorsPluginFixture {
         """\
             repositories {
                 maven {
-                    name 'm1'
+                    name 'pm1'
                     url '${ARTIFACTORY_URL}/repo1'
                 }
                 ivy {
-                    name 'i1'
+                    name 'pi1'
                     url 'https://jcenter.bintray.com'
                 }
-                mavenCentral {name 'm2'}
+                mavenCentral {name 'pm2'}
                 maven {
-                    name 'm3'
+                    name 'pm3'
                     url 'https://repo1.maven.org/maven2'
                 }
                 ivy {
-                    name 'i2'
+                    name 'pi2'
                     url 'https://jcenter.bintray.com/'
                 }
-                jcenter {name 'm4'}
+                jcenter {name 'pm4'}
             }
         """.stripIndent()
     }
