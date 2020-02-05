@@ -1,14 +1,8 @@
 afterEvaluate {
     plugins.withType(JavaPlugin) {
-        task sourcesJar(type: Jar) {
-            archiveClassifier = 'sources'
-            from sourceSets.main.allSource
-        }
-
-        task javadocJar(type: Jar) {
-            dependsOn javadoc
-            archiveClassifier = 'javadoc'
-            from javadoc.destinationDir
+        java {
+            withJavadocJar()
+            withSourcesJar()
         }
     }
 
@@ -20,24 +14,10 @@ afterEvaluate {
         }
     }
 
-    artifacts {
-        plugins.withType(JavaPlugin) {
-            archives sourcesJar
-            archives javadocJar
-        }
-
-        plugins.withType(GroovyPlugin) {
-            archives groovydocJar
-        }
-    }
-
     publishing {
         publications {
             pluginMaven(MavenPublication) {
-                plugins.withType(JavaPlugin) {
-                    artifact sourcesJar
-                    artifact javadocJar
-                }
+
                 plugins.withType(GroovyPlugin) {
                     artifact groovydocJar
                 }

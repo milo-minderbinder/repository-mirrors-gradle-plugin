@@ -2,6 +2,8 @@
 A Gradle [init script plugin](https://docs.gradle.org/current/userguide/init_scripts.html#sec:init_script_plugins) that dynamically updates buildscript and project repositories to use the configured mirror URLs.
 
 ## Usage
+The repository-mirrors-gradle-plugin is available in the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/co.insecurity.repository-mirrors).
+
 To apply the plugin to all projects on your workstation or build server automatically, update the Gradle init script below with your own Artifactory URL, and save it to `$HOME/.gradle/init.d/repositoryMirrors.gradle`.
 
 ```groovy
@@ -18,7 +20,7 @@ apply plugin: co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin
 
 allprojects {
     repositoryMirrors {
-        artifactoryURL = 'https://artifactory.example.com/artifactory'
+        artifactoryURL = 'https://repo.jfrog.org/artifactory'
     }
     removeDuplicates = true  // remove duplicate (i.e. same URL) Ivy and Maven repositories (default: false)
 }
