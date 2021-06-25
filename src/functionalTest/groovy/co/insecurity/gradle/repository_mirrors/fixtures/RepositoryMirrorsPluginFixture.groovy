@@ -1,8 +1,7 @@
 package co.insecurity.gradle.repository_mirrors.fixtures
 
-import static co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin.EXTENSION_NAME
 import static co.insecurity.gradle.repository_mirrors.AbstractFunctionalTest.ARTIFACTORY_URL
-
+import static co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin.EXTENSION_NAME
 
 final class RepositoryMirrorsPluginFixture {
     private RepositoryMirrorsPluginFixture() {}

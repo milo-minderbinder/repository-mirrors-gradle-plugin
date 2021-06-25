@@ -1,10 +1,17 @@
 sourceSets {
     functionalTest {
-        groovy.srcDir file('src/functionalTest/groovy')
-        resources.srcDir file('src/functionalTest/resources')
-        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
-        runtimeClasspath += output + compileClasspath
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
     }
+}
+
+configurations {
+    functionalTestImplementation.extendsFrom implementation, testImplementation
+    functionalTestRuntimeOnly.extendsFrom runtimeOnly, testRuntimeOnly
+}
+
+dependencies {
+    functionalTestImplementation 'org.mock-server:mockserver-netty:5.11.2'
 }
 
 task functionalTest(type: Test) {

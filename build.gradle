@@ -2,8 +2,8 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '0.10.1'
-    id 'pl.allegro.tech.build.axion-release' version '1.11.0'
+    id 'com.gradle.plugin-publish' version '0.15.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.13.2'
 }
 
 description 'A Gradle init script plugin that dynamically updates buildscript and project repositories to use the configured mirror URLs.'
@@ -21,9 +21,10 @@ scmVersion {
 project.version = scmVersion.version
 logger.info("version: ${project.version}")
 
-tasks.withType(GroovyCompile) {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
 
 apply from: "${rootDir}/gradle/functional-test.gradle"
@@ -31,18 +32,18 @@ apply from: "${rootDir}/gradle/maven-publish.gradle"
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
     implementation localGroovy()
     implementation gradleApi()
     testImplementation gradleTestKit()
-    testImplementation("org.spockframework:spock-core:1.3-groovy-2.5") {
-        exclude module: "groovy-all"
-    }
-    testImplementation 'org.mock-server:mockserver-netty:5.9.0'
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
     testRuntimeOnly files(pluginUnderTestMetadata)
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 gradlePlugin {

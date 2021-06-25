@@ -1,12 +1,11 @@
 package co.insecurity.gradle.repository_mirrors
 
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import org.mockserver.integration.ClientAndServer
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
 import spock.lang.Specification
+import spock.lang.TempDir
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer
 
@@ -15,10 +14,7 @@ abstract class AbstractFunctionalTest extends Specification {
     public static final int MOCK_SERVER_PORT = 8080
     public static final String ARTIFACTORY_URL = "http://localhost:${MOCK_SERVER_PORT}/artifactory"
 
-    @Rule
-    final TemporaryFolder temporaryFolder = new TemporaryFolder()
-
-    File projectDir
+    @TempDir File projectDir
     File buildFile
     File initscriptFile
     File propertiesFile
@@ -26,10 +22,9 @@ abstract class AbstractFunctionalTest extends Specification {
     ClientAndServer artifactoryServer
 
     def setup() {
-        projectDir = temporaryFolder.root
-        buildFile = temporaryFolder.newFile('build.gradle')
-        initscriptFile = temporaryFolder.newFile('init.gradle')
-        propertiesFile = temporaryFolder.newFile('gradle.properties')
+        buildFile = new File(projectDir, 'build.gradle')
+        initscriptFile = new File(projectDir, 'init.gradle')
+        propertiesFile = new File(projectDir, 'gradle.properties')
         setupInitscriptFile()
         setupBuildFile()
         setupPropertiesFile()
@@ -101,10 +96,8 @@ abstract class AbstractFunctionalTest extends Specification {
 
     protected void copyResourceFileIntoProjectDir(String resourceFileName, String targetFileName) {
         def resourceFileContent = new File(getClass().getClassLoader().getResource(resourceFileName).toURI()).text
-        def targetDirectory = new File(projectDir.root, targetFileName).parentFile
-        targetDirectory.mkdirs()
-        def targetFile = projectDir.newFile(targetFileName)
-        targetFile << resourceFileContent
+        File targetFile = new File(projectDir, targetFileName)
+        targetFile.text = resourceFileContent
     }
 
     protected File getResourceFile(String resourceFileName) {
