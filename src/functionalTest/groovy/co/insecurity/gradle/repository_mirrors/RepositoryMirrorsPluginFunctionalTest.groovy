@@ -10,19 +10,27 @@ import static co.insecurity.gradle.repository_mirrors.fixtures.RepositoryMirrors
 
 
 class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
+    protected static final List<String> GRADLE_VERSIONS = [
+            '7.1',
+            '6.9',
+            '5.6.4',
+    ].asUnmodifiable()
     protected static final List<String> DEFAULT_TASKS = [
             ":${RepositoryMirrorsReport.TASK_NAME}".toString()
     ].asUnmodifiable()
 
     def "plugin can be added with no repositories and no configuration"() {
         when:
-        BuildResult result = buildWithDefaultTasks()
+        BuildResult result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
         assert DEFAULT_TASKS.every {String taskPath ->
             result.task(taskPath).outcome == TaskOutcome.SUCCESS
         }
+
+        where:
+        v << GRADLE_VERSIONS
     }
 
     def "plugin can be added when buildscript repositories defined if configured in init script"() {
@@ -35,7 +43,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         buildFile << buildscriptRepositories()
 
         when:
-        BuildResult result = buildWithDefaultTasks()
+        BuildResult result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
@@ -49,7 +57,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         artifactoryServer
                 .when(HttpRequest.request())
                 .respond(HttpResponse.notFoundResponse())
-        result = buildWithDefaultTasks()
+        result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
@@ -57,6 +65,9 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
             result.task(taskPath).outcome == TaskOutcome.SUCCESS
         }
         assert result.output.contains('bsm2 - https://repo1.maven.org/maven2')
+
+        where:
+        v << GRADLE_VERSIONS
     }
 
     def "plugin can be added when project repositories defined if configured in build file"() {
@@ -65,7 +76,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         buildFile << projectRepositories()
 
         when:
-        BuildResult result = buildWithDefaultTasks()
+        BuildResult result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
@@ -79,7 +90,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         artifactoryServer
                 .when(HttpRequest.request())
                 .respond(HttpResponse.notFoundResponse())
-        result = buildWithDefaultTasks()
+        result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
@@ -87,6 +98,9 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
             result.task(taskPath).outcome == TaskOutcome.SUCCESS
         }
         assert result.output.contains('pi1 - https://jcenter.bintray.com')
+
+        where:
+        v << GRADLE_VERSIONS
     }
 
     def "plugin can be added when buildscript and project repositories defined if configured in init script"() {
@@ -100,7 +114,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         buildFile << projectRepositories()
 
         when:
-        BuildResult result = buildWithDefaultTasks()
+        BuildResult result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
@@ -115,7 +129,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         artifactoryServer
                 .when(HttpRequest.request())
                 .respond(HttpResponse.notFoundResponse())
-        result = buildWithDefaultTasks()
+        result = buildWithDefaultTasks(v)
 
         then:
         assert result.output
@@ -124,14 +138,18 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
         }
         assert result.output.contains('bsm2 - https://repo1.maven.org/maven2')
         assert result.output.contains('pi1 - https://jcenter.bintray.com')
+
+        where:
+        v << GRADLE_VERSIONS
     }
 
-    private BuildResult buildWithDefaultTasks() {
+    private BuildResult buildWithDefaultTasks(String version) {
         //println "initscript file:"
         //println initscriptFile.text
         //println "build file:"
         //println buildFile.text
         gradleRunner
+                .withGradleVersion(version)
                 .withArguments(gradleRunner.getArguments() + DEFAULT_TASKS)
                 .build()
     }
