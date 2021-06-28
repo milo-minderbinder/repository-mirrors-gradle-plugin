@@ -21,14 +21,18 @@ class RepositoryMirrorsReport extends DefaultTask {
                 'buildscript repositories': project.buildscript.repositories,
                 'repositories'            : project.repositories
         ].collect {String repoHandlerName, RepositoryHandler repositories ->
-            "${project} ${repoHandlerName}:\n\t" + repositories.withType(ArtifactRepository).findAll {ArtifactRepository r ->
-                if ((r instanceof MavenArtifactRepository) || (r instanceof IvyArtifactRepository)) {
-                    return true
-                }
-                return false
-            }.collect {ArtifactRepository r ->
-                "${r.name} - ${r.url}".toString()
-            }.join('\n\t')
+            "${project} ${repoHandlerName}:\n\t" + repositories.
+                    withType(ArtifactRepository).
+                    findAll {ArtifactRepository r ->
+                        if ((r instanceof MavenArtifactRepository) || (r instanceof IvyArtifactRepository)) {
+                            return true
+                        }
+                        return false
+                    }.
+                    collect {ArtifactRepository r ->
+                        "${r.name} - ${r.url}".toString()
+                    }.
+                    join('\n\t')
         }.join('\n\n')
 
         String output = """\

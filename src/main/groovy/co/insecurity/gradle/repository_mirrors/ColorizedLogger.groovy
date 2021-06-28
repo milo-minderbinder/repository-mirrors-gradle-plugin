@@ -49,7 +49,7 @@ class ColorizedLogger implements Logger {
     String colorize(LogLevel level, String message) {
         String colorStart = ''
         String colorEnd = ANSIColor.RESET.toString()
-        switch(level) {
+        switch (level) {
             case LogLevel.INFO:
                 colorStart = ANSIColor.BRIGHT_GREEN.toString()
                 break
@@ -160,7 +160,7 @@ class ColorizedLogger implements Logger {
 
     @Override
     void trace(Marker marker, String s, Object o, Object o1) {
-        this.log.trace(marker, this.colorize(null, s),o, o1)
+        this.log.trace(marker, this.colorize(null, s), o, o1)
     }
 
     @Override
@@ -220,7 +220,7 @@ class ColorizedLogger implements Logger {
 
     @Override
     void debug(Marker marker, String s, Object o, Object o1) {
-        this.log.debug(marker, this.colorize(null, s),o, o1)
+        this.log.debug(marker, this.colorize(null, s), o, o1)
     }
 
     @Override
@@ -280,7 +280,7 @@ class ColorizedLogger implements Logger {
 
     @Override
     void info(Marker marker, String s, Object o, Object o1) {
-        this.log.info(marker, this.colorize(null, s),o, o1)
+        this.log.info(marker, this.colorize(null, s), o, o1)
     }
 
     @Override
@@ -340,7 +340,7 @@ class ColorizedLogger implements Logger {
 
     @Override
     void warn(Marker marker, String s, Object o, Object o1) {
-        this.log.warn(marker, this.colorize(null, s),o, o1)
+        this.log.warn(marker, this.colorize(null, s), o, o1)
     }
 
     @Override
@@ -400,7 +400,7 @@ class ColorizedLogger implements Logger {
 
     @Override
     void error(Marker marker, String s, Object o, Object o1) {
-        this.log.error(marker, this.colorize(null, s),o, o1)
+        this.log.error(marker, this.colorize(null, s), o, o1)
     }
 
     @Override

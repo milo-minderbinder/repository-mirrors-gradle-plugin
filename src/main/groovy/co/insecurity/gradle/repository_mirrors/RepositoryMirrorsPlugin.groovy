@@ -46,13 +46,15 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
 
     static Map<String, String> getMirrorsForType(String artifactoryURL, PackageType packageType) {
         URL reposAPIURL = new URL(String.format('%s/%s?type=remote&packageType=%s',
-                artifactoryURL, REMOTE_REPOS_ENDPOINT, packageType.toString()))
+                                                artifactoryURL, REMOTE_REPOS_ENDPOINT, packageType.toString()))
         log.debug "fetching mirrors from ${reposAPIURL}"
         List repoList
         try {
             repoList = new JsonSlurper().parse(reposAPIURL, StandardCharsets.UTF_8.name()) as List
-        } catch(Exception e) {
-            log.warn("ignoring ${packageType} mirrors in ${artifactoryURL}; exception while fetching & parsing ${reposAPIURL}", e)
+        } catch (Exception e) {
+            log.warn(
+                    "ignoring ${packageType} mirrors in ${artifactoryURL}; exception while fetching & parsing ${reposAPIURL}",
+                    e)
             return Collections.emptyMap()
         }
         Map<String, String> mirrors = repoList.collectEntries {
@@ -94,7 +96,9 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
             String repoURL = repo.url.toString().replaceFirst('/$', '')
             if (packageMirrors.containsKey(repoURL)) {
                 String mirrorURL = packageMirrors.get(repoURL)
-                log.warn "${ColorizedLogger.ANSIColor.YELLOW}Changing ${repo.name} URL to artifactory mirror URL${ColorizedLogger.ANSIColor.RESET}: ${repo.url} -> ${mirrorURL}"
+                log.warn String.format(
+                        "%sChanging ${repo.name} URL to artifactory mirror URL%s: ${repo.url} -> ${mirrorURL}",
+                        ColorizedLogger.ANSIColor.YELLOW, ColorizedLogger.ANSIColor.RESET)
                 repo.url = mirrorURL
             }
         }
@@ -105,7 +109,9 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
             }
             if (extension.removeDuplicates.getOrElse(false)) {
                 if (repoURLs.contains(repo.url.toString())) {
-                    log.warn "${ColorizedLogger.ANSIColor.BRIGHT_RED}Removing duplicate repository${ColorizedLogger.ANSIColor.RESET}: ${repo.name} (${repo.url})"
+                    log.warn String.format(
+                            "%sRemoving duplicate repository%s: ${repo.name} (${repo.url})",
+                            ColorizedLogger.ANSIColor.BRIGHT_RED, ColorizedLogger.ANSIColor.RESET)
                     remove repo
                 } else {
                     repoURLs.add(repo.url.toString())

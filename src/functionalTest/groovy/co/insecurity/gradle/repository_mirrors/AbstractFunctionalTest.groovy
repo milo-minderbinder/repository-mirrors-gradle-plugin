@@ -14,7 +14,8 @@ abstract class AbstractFunctionalTest extends Specification {
     public static final int MOCK_SERVER_PORT = 8080
     public static final String ARTIFACTORY_URL = "http://localhost:${MOCK_SERVER_PORT}/artifactory"
 
-    @TempDir File projectDir
+    @TempDir
+    File projectDir
     File buildFile
     File initscriptFile
     File propertiesFile
@@ -109,13 +110,18 @@ abstract class AbstractFunctionalTest extends Specification {
         Properties properties = new Properties()
         def pluginClasspathResource = getClass().classLoader.getResource('plugin-under-test-metadata.properties')
         if (pluginClasspathResource == null) {
-            throw new IllegalStateException("Did not find plugin classpath resource, run `pluginUnderTestMetadata` build task.")
+            throw new IllegalStateException(
+                    "Did not find plugin classpath resource, run `pluginUnderTestMetadata` build task.")
         }
-        pluginClasspathResource.withInputStream {properties.load(it)}
+        pluginClasspathResource.withInputStream {
+            properties.load(it)
+        }
         List<File> pluginClasspath = properties.getProperty('implementation-classpath').split(':').collect {
             new File(it)
         }
-        String pluginClasspathString = pluginClasspath.collect {"'${it.canonicalPath}'"}.join(', ')
+        String pluginClasspathString = pluginClasspath.collect {
+            "'${it.canonicalPath}'"
+        }.join(', ')
         return pluginClasspathString
     }
 }

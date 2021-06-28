@@ -4,7 +4,8 @@ import static co.insecurity.gradle.repository_mirrors.AbstractFunctionalTest.ART
 import static co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin.EXTENSION_NAME
 
 final class RepositoryMirrorsPluginFixture {
-    private RepositoryMirrorsPluginFixture() {}
+    private RepositoryMirrorsPluginFixture() {
+    }
 
     static String extensionSetArtifactoryURL() {
         "${EXTENSION_NAME}.artifactoryURL = '${ARTIFACTORY_URL}'\n"
