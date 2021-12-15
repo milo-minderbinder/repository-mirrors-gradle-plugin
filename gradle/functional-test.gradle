@@ -19,15 +19,11 @@ task functionalTest(type: Test) {
     group = 'verification'
     testClassesDirs = sourceSets.functionalTest.output.classesDirs
     classpath = sourceSets.functionalTest.runtimeClasspath
-    mustRunAfter test
+    shouldRunAfter test
 
-    reports {
-        html.setDestination project.file("${html.destination}/functional")
-        junitXml.setDestination project.file("${junitXml.destination}/functional")
-    }
     testLogging {
         showStandardStreams = true
-        events 'started', 'passed', 'failed'
+        events 'started', 'passed', 'skipped', 'failed'
     }
 }
 
@@ -36,4 +32,3 @@ check.dependsOn functionalTest
 gradlePlugin {
     testSourceSets sourceSets.functionalTest
 }
-

@@ -2,8 +2,8 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '0.15.0'
-    id 'pl.allegro.tech.build.axion-release' version '1.13.2'
+    id 'com.gradle.plugin-publish' version '0.18.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.13.6'
 }
 
 description 'A Gradle init script plugin that dynamically updates buildscript and project repositories to use the configured mirror URLs.'
