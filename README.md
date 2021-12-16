@@ -21,8 +21,19 @@ apply plugin: co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin
 allprojects {
     repositoryMirrors {
         artifactoryURL = 'https://repo.jfrog.org/artifactory'
+        // read timeout in milliseconds; when readTimeout > 0, a warning will be emitted if exceeded while
+        // reading response from Artifactory server and configured repos will be left unmodified;
+        // otherwise, if readTimeout <= 0, wait for the server to respond indefinitely
+        // (default: 5000ms)
+        readTimeout = 10000
+        // connection timeout in milliseconds; when connectTimeout > 0, a warning will be emitted if exceeded while
+        // connecting to Artifactory server and configured repos will be left unmodified;
+        // otherwise, if connectTimeout <= 0, wait for the connection to complete indefinitely
+        // (default: 5000ms)
+        connectTimeout = 5000
+        removeDuplicates = true  // remove duplicate (i.e. same URL) Ivy and Maven repositories (default: false)
+        enabled = true  // when false, plugin execution will be skipped (default: false)
     }
-    removeDuplicates = true  // remove duplicate (i.e. same URL) Ivy and Maven repositories (default: false)
 }
 ```
 
