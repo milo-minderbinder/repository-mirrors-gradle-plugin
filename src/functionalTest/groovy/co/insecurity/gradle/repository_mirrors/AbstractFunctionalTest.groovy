@@ -1,6 +1,7 @@
 package co.insecurity.gradle.repository_mirrors
 
 import org.gradle.testkit.runner.GradleRunner
+import org.mockserver.configuration.ConfigurationProperties
 import org.mockserver.integration.ClientAndServer
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
@@ -75,6 +76,8 @@ abstract class AbstractFunctionalTest extends Specification {
     }
 
     protected void setupMockServer() {
+        ConfigurationProperties.enableCORSForAllResponses(false)
+        ConfigurationProperties.enableCORSForAPI(false)
         artifactoryServer = startClientAndServer(MOCK_SERVER_PORT)
         RepositoryMirrorsPlugin.PackageType.values().each {RepositoryMirrorsPlugin.PackageType packageType ->
             String response = getResourceFile("mock-remote-${packageType}-response.json").text
