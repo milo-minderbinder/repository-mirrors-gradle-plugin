@@ -12,7 +12,7 @@ initscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "co.insecurity:repository-mirrors-gradle-plugin:0.2.1"
+        classpath "co.insecurity:repository-mirrors-gradle-plugin:0.3.0"
     }
 }
 
