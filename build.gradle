@@ -9,12 +9,23 @@ plugins {
 description 'A Gradle init script plugin that dynamically updates buildscript and project repositories to use the configured mirror URLs.'
 group 'co.insecurity'
 scmVersion {
+    ignoreUncommittedChanges = false
     tag {
         prefix = 'v'
         versionSeparator = ''
     }
+    versionIncrementer 'incrementPatch'
+    branchVersionIncrementer = [
+            'feature/.*': 'incrementMinor',
+            'bugfix/.*': 'incrementPatch',
+    ]
+    createReleaseCommit false
     hooks {
-        pre 'fileUpdate', [file: 'README.md', pattern: {v, c -> /\b$v\b/}, replacement: {v, c -> /$v/}]
+        pre 'fileUpdate', [
+                files: ['README.md'],
+                pattern: {v, c -> /\b$v\b/},
+                replacement: {v, c -> "$v"},
+        ]
         pre 'commit'
     }
 }
