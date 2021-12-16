@@ -44,13 +44,24 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
         }
     }
 
-    static Map<String, String> getMirrorsForType(String artifactoryURL, PackageType packageType) {
+    static Map<String, String> getMirrorsForType(
+            RepositoryMirrorsExtension extension, String artifactoryURL, PackageType packageType
+    ) {
+        Map<String, Object> connectionParams = new HashMap<>();
+        Integer connectTimeout = extension.connectTimeout.getOrElse(RepositoryMirrorsExtension.DEFAULT_CONNECT_TIMEOUT)
+        Integer readTimeout = extension.readTimeout.getOrElse(RepositoryMirrorsExtension.DEFAULT_READ_TIMEOUT)
+        if (connectTimeout > 0) {
+            connectionParams.put("connectTimeout", connectTimeout)
+        }
+        if (readTimeout > 0) {
+            connectionParams.put("readTimeout", readTimeout)
+        }
         URL reposAPIURL = new URL(String.format('%s/%s?type=remote&packageType=%s',
                                                 artifactoryURL, REMOTE_REPOS_ENDPOINT, packageType.toString()))
         log.debug "fetching mirrors from ${reposAPIURL}"
         List repoList
         try {
-            repoList = new JsonSlurper().parse(reposAPIURL, StandardCharsets.UTF_8.name()) as List
+            repoList = new JsonSlurper().parse(reposAPIURL, connectionParams, StandardCharsets.UTF_8.name()) as List
         } catch (Exception e) {
             log.warn(
                     "ignoring ${packageType} mirrors in ${artifactoryURL}; exception while fetching & parsing ${reposAPIURL}",
@@ -81,7 +92,7 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
         }.unique()
 
         Map<String, String> packageMirrors = artifactoryURLs.collect {String artifactoryURL ->
-            getMirrorsForType(artifactoryURL, packageType)
+            getMirrorsForType(extension, artifactoryURL, packageType)
         }.collectEntries()
         this.mirrors.put(packageType, packageMirrors)
         return packageMirrors
