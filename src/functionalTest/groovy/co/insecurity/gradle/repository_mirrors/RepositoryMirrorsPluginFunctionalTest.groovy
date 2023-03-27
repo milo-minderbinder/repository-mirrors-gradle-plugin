@@ -15,9 +15,9 @@ import static co.insecurity.gradle.repository_mirrors.fixtures.RepositoryMirrors
 
 class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
     protected static final List<String> GRADLE_VERSIONS = [
-            '7.3.2',
-            '7.1.1',
-            '6.9.1',
+            '8.0.2',
+            '7.6.1',
+            '6.9.4',
             '5.6.4',
     ].asUnmodifiable()
     protected static final List<String> DEFAULT_TASKS = [

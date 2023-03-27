@@ -2,8 +2,15 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '0.18.0'
-    id 'pl.allegro.tech.build.axion-release' version '1.13.6'
+    id 'com.gradle.plugin-publish' version '1.1.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.15.0'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        vendor = JvmVendorSpec.AZUL
+    }
 }
 
 description 'A Gradle init script plugin that dynamically updates buildscript and project repositories to use the configured mirror URLs.'
@@ -32,12 +39,6 @@ scmVersion {
 project.version = scmVersion.version
 logger.info("version: ${project.version}")
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
-}
-
 apply from: "${rootDir}/gradle/functional-test.gradle"
 apply from: "${rootDir}/gradle/maven-publish.gradle"
 
@@ -49,7 +50,7 @@ dependencies {
     implementation localGroovy()
     implementation gradleApi()
     testImplementation gradleTestKit()
-    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
     testRuntimeOnly files(pluginUnderTestMetadata)
 }
 
@@ -58,22 +59,16 @@ tasks.withType(Test).configureEach {
 }
 
 gradlePlugin {
+    website = "https://github.com/milo-minderbinder/${rootProject.name}"
+    vcsUrl = "https://github.com/milo-minderbinder/${rootProject.name}.git"
     plugins {
         repositoryMirrorsPlugin {
             id = 'co.insecurity.repository-mirrors'
             implementationClass = 'co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin'
+            displayName = 'Repository Mirrors Gradle Plugin'
+            description = "${rootProject.description}"
+            tags.set(['repository', 'mirror', 'mirrors', 'artifactory'])
         }
     }
 }
 
-pluginBundle {
-    website = "https://github.com/milo-minderbinder/${rootProject.name}"
-    vcsUrl = "https://github.com/milo-minderbinder/${rootProject.name}.git"
-    tags = ['repository', 'mirror', 'mirrors', 'artifactory']
-    plugins {
-        repositoryMirrorsPlugin {
-            displayName = 'Repository Mirrors Gradle Plugin'
-            description = "${rootProject.description}"
-        }
-    }
-}
