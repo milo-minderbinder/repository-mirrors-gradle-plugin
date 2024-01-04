@@ -39,7 +39,7 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
         gradle.allprojects {Project project ->
             log.debug "creating ${project} ${EXTENSION_NAME} extension"
             extension = project.extensions.create(EXTENSION_NAME, RepositoryMirrorsExtension, project)
-            project.tasks.create(RepositoryMirrorsReport.TASK_NAME, RepositoryMirrorsReport)
+            project.tasks.register(RepositoryMirrorsReport.TASK_NAME, RepositoryMirrorsReport)
             configureRepositoryMirrors(project, extension)
         }
     }
@@ -63,13 +63,22 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
         try {
             repoList = new JsonSlurper().parse(reposAPIURL, connectionParams, StandardCharsets.UTF_8.name()) as List
         } catch (Exception e) {
+            if (extension.failOnTimeout.getOrElse(false)) {
+                log.error(
+                        "failed to retrieve ${packageType} mirrors in ${artifactoryURL}; exception while fetching & " +
+                                "parsing ${reposAPIURL} (note: to ignore connection errors, set the failOnTimeout " +
+                                "extension property to false)",
+                        e)
+                throw e
+            }
             log.warn(
-                    "ignoring ${packageType} mirrors in ${artifactoryURL}; exception while fetching & parsing ${reposAPIURL}",
+                    "ignoring ${packageType} mirrors in ${artifactoryURL}; " +
+                            "exception while fetching & parsing ${reposAPIURL}",
                     e)
             return Collections.emptyMap()
         }
         Map<String, String> mirrors = repoList.collectEntries {
-            String remoteURL = it.url.replaceFirst('/$', '')
+            String remoteURL = it.url.replaceFirst('/+$', '')
             String key = it.key
             String mirrorURL = "${artifactoryURL}/${key}"
             return [(remoteURL): mirrorURL]
@@ -104,13 +113,19 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
                 return
             }
             log.debug "checking for mirror: ${repo.name} - ${repo.url}"
-            String repoURL = repo.url.toString().replaceFirst('/$', '')
+            String repoURL = repo.url.toString().replaceFirst('/+$', '')
             if (packageMirrors.containsKey(repoURL)) {
                 String mirrorURL = packageMirrors.get(repoURL)
                 log.warn String.format(
                         "%sChanging ${repo.name} URL to artifactory mirror URL%s: ${repo.url} -> ${mirrorURL}",
                         ColorizedLogger.ANSIColor.YELLOW, ColorizedLogger.ANSIColor.RESET)
                 repo.url = mirrorURL
+            } else if (extension.removeMissing.getOrElse(false) && !packageMirrors.containsValue(repoURL)) {
+                log.warn String.format(
+                        "%sNo mirror found - removing repository%s (this behavior can be disabled by setting the " +
+                                "removeMissing extension property to false): ${repo.name} (${repo.url})",
+                        ColorizedLogger.ANSIColor.BRIGHT_RED, ColorizedLogger.ANSIColor.RESET)
+                remove repo
             }
         }
 
@@ -135,13 +150,17 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
                 [(packageType): new HashSet<String>()]
             }
             withType(MavenArtifactRepository) {MavenArtifactRepository repo ->
-                repoMirrorClosure(getMirrors(extension, PackageType.MAVEN), repo)
+                repoMirrorClosure.rehydrate(
+                        getDelegate(), getOwner(), getThisObject()
+                )(getMirrors(extension, PackageType.MAVEN), repo)
                 duplicateRepoCheckClosure.rehydrate(
                         getDelegate(), getOwner(), getThisObject()
                 )(repoURLs.get(PackageType.MAVEN), repo)
             }
             withType(IvyArtifactRepository) {IvyArtifactRepository repo ->
-                repoMirrorClosure(getMirrors(extension, PackageType.IVY), repo)
+                repoMirrorClosure.rehydrate(
+                        getDelegate(), getOwner(), getThisObject()
+                )(getMirrors(extension, PackageType.IVY), repo)
                 duplicateRepoCheckClosure.rehydrate(
                         getDelegate(), getOwner(), getThisObject()
                 )(repoURLs.get(PackageType.IVY), repo)

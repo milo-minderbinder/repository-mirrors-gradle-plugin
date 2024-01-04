@@ -12,7 +12,9 @@ class RepositoryMirrorsExtension {
     ListProperty<String> artifactoryURLs
     Property<Integer> connectTimeout
     Property<Integer> readTimeout
+    Property<Boolean> failOnTimeout
     Property<Boolean> removeDuplicates
+    Property<Boolean> removeMissing
     Property<Boolean> enabled
 
     RepositoryMirrorsExtension(Project project) {
@@ -20,7 +22,9 @@ class RepositoryMirrorsExtension {
         artifactoryURLs = project.objects.listProperty(String)
         connectTimeout = project.objects.property(Integer)
         readTimeout = project.objects.property(Integer)
+        failOnTimeout = project.objects.property(Boolean)
         removeDuplicates = project.objects.property(Boolean)
+        removeMissing = project.objects.property(Boolean)
         enabled = project.objects.property(Boolean)
     }
 }

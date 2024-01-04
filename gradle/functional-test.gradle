@@ -10,25 +10,21 @@ configurations {
     functionalTestRuntimeOnly.extendsFrom runtimeOnly, testRuntimeOnly
 }
 
-dependencies {
-    functionalTestImplementation 'org.mock-server:mockserver-netty:5.15.0'
-}
-
-task functionalTest(type: Test) {
+def functionalTestTask = tasks.register('functionalTest', Test) {
     description = 'Runs the functional tests.'
     group = 'verification'
     testClassesDirs = sourceSets.functionalTest.output.classesDirs
     classpath = sourceSets.functionalTest.runtimeClasspath
-    shouldRunAfter test
+    shouldRunAfter(tasks.named('test'))
+}
 
-    testLogging {
-        showStandardStreams = true
-        events 'started', 'passed', 'skipped', 'failed'
+tasks.named('check') {
+    dependsOn functionalTestTask
+}
+
+pluginManager.withPlugin('java-gradle-plugin') {
+    gradlePlugin {
+        testSourceSets sourceSets.functionalTest
     }
 }
 
-check.dependsOn functionalTest
-
-gradlePlugin {
-    testSourceSets sourceSets.functionalTest
-}

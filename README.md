@@ -31,7 +31,9 @@ allprojects {
         // otherwise, if connectTimeout <= 0, wait for the connection to complete indefinitely
         // (default: 5000ms)
         connectTimeout = 5000
+        failOnTimeout = false  // fail build on connection timeout to Artifactory server (default: false)
         removeDuplicates = true  // remove duplicate (i.e. same URL) Ivy and Maven repositories (default: false)
+        removeMissing = false  // remove Ivy and Maven repositories which do not have a mirror (default: false)
         enabled = true  // when false, plugin execution will be skipped (default: false)
     }
 }

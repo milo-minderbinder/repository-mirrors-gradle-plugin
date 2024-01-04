@@ -2,8 +2,8 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '1.1.0'
-    id 'pl.allegro.tech.build.axion-release' version '1.15.0'
+    id 'com.gradle.plugin-publish' version '1.2.1'
+    id 'pl.allegro.tech.build.axion-release' version '1.16.1'
 }
 
 java {
@@ -46,16 +46,25 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+
+    testLogging {
+        showStandardStreams = true
+        events 'started', 'passed', 'skipped', 'failed'
+    }
+}
+
 dependencies {
     implementation localGroovy()
     implementation gradleApi()
-    testImplementation gradleTestKit()
-    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
-    testRuntimeOnly files(pluginUnderTestMetadata)
-}
 
-tasks.withType(Test).configureEach {
-    useJUnitPlatform()
+    testImplementation platform('org.spockframework:spock-bom:2.3-groovy-3.0')
+    testImplementation 'org.spockframework:spock-core'
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    functionalTestImplementation 'org.mock-server:mockserver-netty:5.15.0'
 }
 
 gradlePlugin {
