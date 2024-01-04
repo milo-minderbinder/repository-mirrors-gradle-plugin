@@ -51,7 +51,7 @@ abstract class AbstractFunctionalTest extends Specification {
     protected void setupInitscriptFile() {
         final String pluginClasspath = getPluginClasspath()
         initscriptFile.append """\
-            println 'in init.gradle'
+            println "in init.gradle with gradle version: \${gradle.gradleVersion}"
             initscript {
                 dependencies {
                     classpath files(${pluginClasspath})
@@ -64,7 +64,7 @@ abstract class AbstractFunctionalTest extends Specification {
 
     protected void setupBuildFile() {
         buildFile.append """\
-            println 'in build.gradle'
+            println "in build.gradle with gradle version: \${gradle.gradleVersion}"
             apply plugin: 'java'
         """.stripIndent()
     }
