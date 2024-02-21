@@ -262,11 +262,13 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
                 'bsm4 - http://localhost:8080/artifactory/jcenter',
                 'bsi2 - http://localhost:8080/artifactory/jcenter-ivy',
                 'bsm6 - http://localhost:8080/artifactory/repo1',
+                'bsm7 - http://localhost:8080/artifactory/internal-maven',
                 'pm1 - http://localhost:8080/artifactory/repo1',
                 'pi1 - http://localhost:8080/artifactory/jcenter-ivy',
                 'pm3 - http://localhost:8080/artifactory/repo1',
                 'pi2 - http://localhost:8080/artifactory/jcenter-ivy',
                 'pm4 - http://localhost:8080/artifactory/jcenter',
+                'pi3 - http://localhost:8080/artifactory/internal-ivy',
         ].every {String s ->
             result.output.contains(s)
         }
