@@ -36,6 +36,10 @@ final class RepositoryMirrorsPluginFixture {
                         name 'bsm6'
                         url '${ARTIFACTORY_URL}/repo1'
                     }
+                    maven {
+                        name 'bsm7'
+                        url '${ARTIFACTORY_URL}/internal-maven'
+                    }
                 }
             }
         """.stripIndent()
@@ -62,6 +66,10 @@ final class RepositoryMirrorsPluginFixture {
                     url 'https://jcenter.bintray.com/'
                 }
                 jcenter {name 'pm4'}
+                ivy {
+                    name 'pi3'
+                    url '${ARTIFACTORY_URL}/internal-ivy'
+                }
             }
         """.stripIndent()
     }

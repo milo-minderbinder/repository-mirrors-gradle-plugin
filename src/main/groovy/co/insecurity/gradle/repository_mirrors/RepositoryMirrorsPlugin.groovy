@@ -5,6 +5,7 @@ import co.insecurity.gradle.repository_mirrors.tasks.RepositoryMirrorsReport
 import groovy.json.JsonSlurper
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
@@ -113,6 +114,7 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
                 return
             }
             log.debug "checking for mirror: ${repo.name} - ${repo.url}"
+            String artifactoryURL = extension.artifactoryURL.get().replaceFirst('/+$', '')
             String repoURL = repo.url.toString().replaceFirst('/+$', '')
             if (packageMirrors.containsKey(repoURL)) {
                 String mirrorURL = packageMirrors.get(repoURL)
@@ -120,7 +122,10 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
                         "%sChanging ${repo.name} URL to artifactory mirror URL%s: ${repo.url} -> ${mirrorURL}",
                         ColorizedLogger.ANSIColor.YELLOW, ColorizedLogger.ANSIColor.RESET)
                 repo.url = mirrorURL
-            } else if (extension.removeMissing.getOrElse(false) && !packageMirrors.containsValue(repoURL)) {
+            } else if (extension.removeMissing.getOrElse(false)
+                    && !repoURL.startsWith("${artifactoryURL}/")
+                    && !packageMirrors.containsValue(repoURL)
+            ) {
                 log.warn String.format(
                         "%sNo mirror found - removing repository%s (this behavior can be disabled by setting the " +
                                 "removeMissing extension property to false): ${repo.name} (${repo.url})",
@@ -134,35 +139,36 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
                 return
             }
             if (extension.removeDuplicates.getOrElse(false)) {
-                if (repoURLs.contains(repo.url.toString())) {
+                String repoURL = repo.url.toString().replaceFirst('/+$', '')
+                if (repoURLs.contains(repoURL)) {
                     log.warn String.format(
                             "%sRemoving duplicate repository%s: ${repo.name} (${repo.url})",
                             ColorizedLogger.ANSIColor.BRIGHT_RED, ColorizedLogger.ANSIColor.RESET)
                     remove repo
                 } else {
-                    repoURLs.add(repo.url.toString())
+                    repoURLs.add(repoURL)
                 }
             }
         }
 
-        Closure configClosure = {
+        Closure configClosure = {RepositoryHandler repositories ->
             Map<PackageType, Set<String>> repoURLs = PackageType.values().collectEntries {PackageType packageType ->
                 [(packageType): new HashSet<String>()]
             }
-            withType(MavenArtifactRepository) {MavenArtifactRepository repo ->
+            repositories.withType(MavenArtifactRepository) {MavenArtifactRepository repo ->
                 repoMirrorClosure.rehydrate(
-                        getDelegate(), getOwner(), getThisObject()
+                        repositories, getOwner(), getThisObject()
                 )(getMirrors(extension, PackageType.MAVEN), repo)
                 duplicateRepoCheckClosure.rehydrate(
-                        getDelegate(), getOwner(), getThisObject()
+                        repositories, getOwner(), getThisObject()
                 )(repoURLs.get(PackageType.MAVEN), repo)
             }
-            withType(IvyArtifactRepository) {IvyArtifactRepository repo ->
+            repositories.withType(IvyArtifactRepository) {IvyArtifactRepository repo ->
                 repoMirrorClosure.rehydrate(
-                        getDelegate(), getOwner(), getThisObject()
+                        repositories, getOwner(), getThisObject()
                 )(getMirrors(extension, PackageType.IVY), repo)
                 duplicateRepoCheckClosure.rehydrate(
-                        getDelegate(), getOwner(), getThisObject()
+                        repositories, getOwner(), getThisObject()
                 )(repoURLs.get(PackageType.IVY), repo)
             }
         }
