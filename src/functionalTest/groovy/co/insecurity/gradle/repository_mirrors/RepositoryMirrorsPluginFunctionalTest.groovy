@@ -13,12 +13,6 @@ import static co.insecurity.gradle.repository_mirrors.RepositoryMirrorsPlugin.EX
 import static co.insecurity.gradle.repository_mirrors.fixtures.RepositoryMirrorsPluginFixture.*
 
 class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
-    protected static final List<String> GRADLE_VERSIONS = [
-            '8.5',
-            '8.0.2',
-            '7.6.3',
-            '6.9.4',
-    ].asUnmodifiable()
     protected static final List<String> DEFAULT_TASKS = [
             ":${RepositoryMirrorsReport.TASK_NAME}".toString()
     ].asUnmodifiable()
@@ -259,7 +253,6 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
                 "bsm1 - file:${projectDir.getCanonicalPath()}",
                 'bsm2 - http://localhost:8080/artifactory/repo1',
                 'bsi1 - http://localhost:8080/artifactory/jcenter-ivy',
-                'bsm4 - http://localhost:8080/artifactory/jcenter',
                 'bsi2 - http://localhost:8080/artifactory/jcenter-ivy',
                 'bsm6 - http://localhost:8080/artifactory/repo1',
                 'bsm7 - http://localhost:8080/artifactory/internal-maven',
@@ -267,7 +260,6 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
                 'pi1 - http://localhost:8080/artifactory/jcenter-ivy',
                 'pm3 - http://localhost:8080/artifactory/repo1',
                 'pi2 - http://localhost:8080/artifactory/jcenter-ivy',
-                'pm4 - http://localhost:8080/artifactory/jcenter',
                 'pi3 - http://localhost:8080/artifactory/internal-ivy',
         ].every {String s ->
             result.output.contains(s)

@@ -1,10 +1,13 @@
 package co.insecurity.gradle.repository_mirrors
 
+import groovy.json.JsonSlurper
 import org.gradle.testkit.runner.GradleRunner
 import org.mockserver.configuration.ConfigurationProperties
 import org.mockserver.integration.ClientAndServer
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.lang.TempDir
 
@@ -12,8 +15,50 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer
 
 
 abstract class AbstractFunctionalTest extends Specification {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractFunctionalTest.class)
+
     public static final int MOCK_SERVER_PORT = 8080
     public static final String ARTIFACTORY_URL = "http://localhost:${MOCK_SERVER_PORT}/artifactory"
+    public static final List<String> GRADLE_VERSIONS
+    static {
+        try {
+            GRADLE_VERSIONS = new JsonSlurper().parse(new URL('https://services.gradle.org/versions/all')).findAll {
+                ![
+                        it.snapshot,
+                        it.nightly,
+                        it.releaseNightly,
+                        it.activeRc,
+                        it.broken,
+                        (it.rcFor != ""),
+                        (it.milestoneFor != ""),
+                        (it.version =~ /(?i)milestone|rc/),
+                ].any()
+            }.collect {
+                it.version as String
+            }.sort((String a, String b) -> {
+                def aParts = a.split(/\./).collect(Integer::parseInt)
+                def bParts = b.split(/\./).collect(Integer::parseInt)
+                int l = Math.min(aParts.size(), bParts.size()) - 1
+                def val = (0..l).collect {i ->
+                    aParts[i] <=> bParts[i]
+                }.find {
+                    it != 0
+                }
+                return val ?: aParts.size() <=> bParts.size()
+            }).reverse().groupBy {String it ->
+                it.split(/\./)[0]
+            }.values().collect {
+                it.first()
+            }[0..2].asUnmodifiable()
+        } catch (IOException e) {
+            LOG.warn("failed to fetch gradle versions from https://services.gradle.org/versions/all", e)
+            GRADLE_VERSIONS = [
+                    '9.0.0',
+                    '8.14.3',
+                    '7.6.6',
+            ].asUnmodifiable()
+        }
+    }
 
     @TempDir
     File projectDir

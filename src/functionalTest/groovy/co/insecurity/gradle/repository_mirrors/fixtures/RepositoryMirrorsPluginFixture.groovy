@@ -26,7 +26,6 @@ final class RepositoryMirrorsPluginFixture {
                         url 'https://jcenter.bintray.com'
                     }
                     mavenCentral {name 'bsm3'}
-                    jcenter {name 'bsm4'}
                     ivy {
                         name 'bsi2'
                         url 'https://jcenter.bintray.com'
@@ -65,7 +64,6 @@ final class RepositoryMirrorsPluginFixture {
                     name 'pi2'
                     url 'https://jcenter.bintray.com/'
                 }
-                jcenter {name 'pm4'}
                 ivy {
                     name 'pi3'
                     url '${ARTIFACTORY_URL}/internal-ivy'

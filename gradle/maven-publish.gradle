@@ -7,7 +7,7 @@ afterEvaluate {
     }
 
     plugins.withType(GroovyPlugin) {
-        task groovydocJar(type: Jar) {
+        tasks.register('groovydocJar', Jar) {
             dependsOn groovydoc
             archiveClassifier = 'groovydoc'
             from groovydoc.destinationDir
