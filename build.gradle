@@ -2,8 +2,8 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '1.2.1'
-    id 'pl.allegro.tech.build.axion-release' version '1.17.0'
+    id 'com.gradle.plugin-publish' version '2.0.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.20.1'
 }
 
 java {
@@ -55,11 +55,13 @@ tasks.withType(Test).configureEach {
     }
 }
 
+final String groovyVer = GroovySystem.getVersion().split(/\./)[0..1].join(".")
+
 dependencies {
     implementation localGroovy()
     implementation gradleApi()
 
-    testImplementation platform('org.spockframework:spock-bom:2.3-groovy-3.0')
+    testImplementation platform("org.spockframework:spock-bom:2.4-M6-groovy-${groovyVer}")
     testImplementation 'org.spockframework:spock-core'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
