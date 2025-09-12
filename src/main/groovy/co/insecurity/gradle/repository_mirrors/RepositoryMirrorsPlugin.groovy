@@ -110,7 +110,7 @@ class RepositoryMirrorsPlugin implements Plugin<Gradle> {
 
     void configureRepositoryMirrors(Project project, RepositoryMirrorsExtension extension) {
         Closure repoMirrorClosure = {Map<String, String> packageMirrors, ArtifactRepository repo ->
-            if (!extension.enabled.getOrElse(true)) {
+            if (!extension.enabled.getOrElse(true) || repo.url.toString().startsWith('file:/')) {
                 return
             }
             log.debug "checking for mirror: ${repo.name} - ${repo.url}"

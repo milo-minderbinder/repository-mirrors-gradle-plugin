@@ -249,7 +249,6 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
             result.task(taskPath).outcome == TaskOutcome.SUCCESS
         }
         assert [
-                'bsm1 - file:/Users/cpassarello16/.m2/repository/',
                 'bsm3 - https://repo.maven.apache.org/maven2/',
                 'bsm5 - https://repo.maven.apache.org/maven2/',
                 'pm2 - https://repo.maven.apache.org/maven2/',
@@ -257,6 +256,7 @@ class RepositoryMirrorsPluginFunctionalTest extends AbstractFunctionalTest {
             !result.output.contains(s)
         }
         assert [
+                "bsm1 - file:${projectDir.getCanonicalPath()}",
                 'bsm2 - http://localhost:8080/artifactory/repo1',
                 'bsi1 - http://localhost:8080/artifactory/jcenter-ivy',
                 'bsm4 - http://localhost:8080/artifactory/jcenter',

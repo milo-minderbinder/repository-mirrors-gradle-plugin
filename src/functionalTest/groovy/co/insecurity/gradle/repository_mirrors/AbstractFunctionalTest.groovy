@@ -38,6 +38,7 @@ abstract class AbstractFunctionalTest extends Specification {
                         '-S',
                         '-I', getResourceFile('testinit.gradle').canonicalPath,
                         '-I', initscriptFile.getCanonicalPath(),
+                        "-Dmaven.repo.local=${projectDir.getCanonicalPath()}".toString(),
                 ])
                 .withPluginClasspath()
                 .withDebug(true)
